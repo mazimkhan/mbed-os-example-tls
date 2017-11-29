@@ -260,15 +260,19 @@ public:
         /* Read data out of the socket */
         offset = 0;
         do {
-            ret = mbedtls_ssl_read(&_ssl, (unsigned char *) _buffer + offset,
-                                   sizeof(_buffer) - offset - 1);
+            ret = mbedtls_ssl_read(&_ssl, (unsigned char *) _buffer,
+                                   sizeof(_buffer) - 1);
+            mbedtls_printf("ret=%d\n", ret);
             if (ret > 0)
-              offset += ret;
+            {
+                //offset += ret;
 
-            /* Check each of the flags */
-            _buffer[offset] = 0;
-            _got200 = _got200 || strstr(_buffer, HTTPS_OK_STR) != NULL;
-            _gothello = _gothello || strstr(_buffer, HTTPS_HELLO_STR) != NULL;
+                /* Check each of the flags */
+                _buffer[ret] = 0;
+                mbedtls_printf("Rx: %s\n", _buffer);
+                _got200 = _got200 || strstr(_buffer, HTTPS_OK_STR) != NULL;
+                _gothello = _gothello || strstr(_buffer, HTTPS_HELLO_STR) != NULL;
+            }
         } while ( (!_got200 || !_gothello) &&
                 (ret > 0 || ret == MBEDTLS_ERR_SSL_WANT_READ ||
                 ret == MBEDTLS_ERR_SSL_WANT_WRITE));
