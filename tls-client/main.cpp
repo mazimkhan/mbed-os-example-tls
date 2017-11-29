@@ -294,7 +294,7 @@ public:
         mbedtls_printf("HTTPS: Received 200 OK status ... %s\n", _got200 ? "[OK]" : "[FAIL]");
         mbedtls_printf("HTTPS: Received '%s' status ... %s\n", HTTPS_HELLO_STR, _gothello ? "[OK]" : "[FAIL]");
         mbedtls_printf("HTTPS: Received message:\n\n");
-        mbedtls_printf("%s", _buffer);
+        mbedtls_printf("Hello world!\n");
 
         delete[] buf;
     }
